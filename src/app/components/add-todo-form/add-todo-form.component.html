@@ -1,0 +1,41 @@
+<form [formGroup]="addForm" (ngSubmit)="onSubmit()" id="addTodoForm">
+  <div class="form-group">
+    <label for="exampleInputPassword1">Enter task name</label>
+    <input
+      type="text"
+      class="form-control"
+      id="taskName"
+      formControlName="taskName"
+      required
+    />
+    <div
+      *ngIf="
+        addForm.get('taskName').invalid &&
+        (addForm.get('taskName').dirty || addForm.get('taskName').touched)
+      "
+      class="alert alert-danger"
+      style="margin-top: 10px"
+    >
+      <div
+        *ngIf="addForm.get('taskName').errors.required"
+        class="taskNameRequiredError"
+      >
+        Task name is required
+      </div>
+      <div
+        *ngIf="addForm.get('taskName').errors.maxlength"
+        class="taskNameMaxLengthError"
+      >
+        Max length is 40 characters
+      </div>
+    </div>
+  </div>
+  <button
+    id="addTodoBtn"
+    type="submit"
+    class="btn btn-primary btn-block addTodoBtn"
+    [disabled]="!addForm.valid"
+  >
+    Submit
+  </button>
+</form>

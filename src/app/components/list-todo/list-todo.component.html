@@ -1,0 +1,21 @@
+<p style="text-align: center" *ngIf="!todos || todos.length === 0">
+  List todo is empty
+</p>
+
+<ul class="list-group" *ngFor="let todo of todos">
+  <li class="list-group-item">
+    {{ todo.name }}
+    <i
+      class="fas fa-trash icon-cus icon-cus--delete"
+      data-toggle="modal"
+      data-target="#deleteConfirmModal"
+      (click)="handleClickDeleteBtn(todo.id)"
+    ></i>
+    <i
+      class="fas fa-edit icon-cus icon-cus--edit"
+      data-toggle="modal"
+      data-target="#editModal"
+      (click)="handleClickEditBtn(todo.id)"
+    ></i>
+  </li>
+</ul>

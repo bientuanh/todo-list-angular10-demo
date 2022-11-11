@@ -1,0 +1,14 @@
+.icon-cus {
+  float: right;
+  cursor: pointer;
+  transition: 0.3s;
+  margin-left: 10px;
+
+  &--delete:hover {
+    color: red;
+  }
+
+  &--edit:hover {
+    color: aqua;
+  }
+}

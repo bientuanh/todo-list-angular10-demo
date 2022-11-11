@@ -1,0 +1,61 @@
+image: node:14
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+
+stages:
+  - lint
+  - test
+  - build
+  - deploy
+
+lint:
+  stage: lint
+  script:
+    - yarn
+    - yarn lint-branch
+  only:
+    - merge_requests
+    - master
+    - tags
+
+test:
+  stage: test
+  before_script:
+    - apt-get update
+    - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    - apt install -y ./google-chrome*.deb
+    - export CHROME_BIN=/usr/bin/google-chrome
+  script:
+    - yarn
+    - yarn test:headless
+  only:
+    - merge_requests
+    - master
+    - tags
+
+build:
+  stage: build
+  script:
+    - yarn
+    - CI=false yarn build:production
+  artifacts:
+    paths:
+      - dist/
+  only:
+    - merge_requests
+    - master
+    - tags
+
+deploy:
+  stage: deploy
+  script:
+    - yarn global add netlify-cli
+    - netlify deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_AUTH_TOKEN --prod
+  dependencies:
+    - build
+  only:
+    - tags
+    - master
